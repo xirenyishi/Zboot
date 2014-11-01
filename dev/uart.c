@@ -11,6 +11,9 @@
 #define URXH0 (*((volatile unsigned char *)0x7f005024 ))
 #define UTXH0 (*((volatile unsigned char *)0x7f005020))
 
+#define PCLK 66500000
+#define BOUD 115200
+
 void uart_init(void)
 {
 	//1.配置GPA引脚功能为UART
@@ -30,7 +33,9 @@ void uart_init(void)
 	UMCON0 = 0x0;
 	
 	//3设置波特率：DIV_VAL = (PCLK / (bps x 16 ) ) - 1； bps = 115200  DIV_VAL = (66500000 / (115200 x 16 ) ) - 1 = 35.08
-	UBRDIV0 = 35;
+	//UBRDIV0 = 35;
+	UBRDIV0 = (int)(PCLK/(BOUD*16)-1);
+	
 	/* x/16 = 0.08
 	 * x = 1
 	 */
